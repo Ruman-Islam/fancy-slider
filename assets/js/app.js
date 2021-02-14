@@ -6,7 +6,7 @@ const searchField = document.getElementById('search-field');
 const sliderBtn = document.getElementById('create-slider');
 const sliderContainer = document.getElementById('sliders');
 const duration = document.getElementById('duration');
-const errorInput = document.getElementById('inputError');
+const warningMessage = document.getElementById('warning');
 // selected image 
 let sliders = [];
 
@@ -16,17 +16,17 @@ const KEY = '15674931-a9d714b6e9d654524df198e00&q';
 const showImages = (images) => { 
   if (searchField.value === '' || images.length === 0) {
     imagesArea.style.display = 'none';
-    errorInput.style.display = "block";
+    warningMessage.style.display = "block";
     if (searchField.value === '') {
-      errorInput.innerText = 'Please, input a name';
+      warningMessage.innerText = 'Please, input a name';
     }
     else {
-      errorInput.innerText = "No data found!";
+      warningMessage.innerText = "No data found!";
       searchField.value= '';
     }
   }
   else {
-    errorInput.style.display = "none";
+    warningMessage.style.display = "none";
     searchField.value = '';
     imagesArea.style.display = 'block';
     gallery.innerHTML = '';
@@ -165,9 +165,9 @@ duration.addEventListener("keypress", function (event) {
 
 // Slider Button Event Handler
 sliderBtn.addEventListener('click', function () {
+  duration.value = '';
   createSlider();
 })
-
 
 //*Extra Feature 'Spinner'
 const toggleSpinner = () => {
