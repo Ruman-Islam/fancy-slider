@@ -146,7 +146,6 @@ const changeSlide = (index) => {
 // Search Button Event Handler
 searchBtn.addEventListener('click', function () {
   document.querySelector('.main').style.display = 'none';
-  document.getElementById('error').classList = 'd-none';
   clearInterval(timer);
   getImages(searchField.value);
   sliders.length = 0;
