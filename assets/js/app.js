@@ -5,6 +5,7 @@ const searchBtn = document.getElementById('search-btn');
 const searchField = document.getElementById('search-field');
 const sliderBtn = document.getElementById('create-slider');
 const sliderContainer = document.getElementById('sliders');
+const duration = document.getElementById('duration');
 // selected image 
 let sliders = [];
 
@@ -37,6 +38,7 @@ const getImages = (query) => {
     //! .then(data => showImages(data.hitS))
     .then(data => showImages(data.hits))
     .catch(err => console.log(err))
+  // create a function here for bonus mark
 }
 
 let slideIndex = 0;
@@ -50,9 +52,11 @@ const selectItem = (event, img) => {
   if (item === -1) {
     sliders.push(img);
   }
-  //! else {
-  //!   alert('Hey, Already added !')
-  //! }
+   else {
+    if (item > -1) {
+      sliders.splice(item, 1);
+    }
+   }
 }
 
 var timer
@@ -96,8 +100,11 @@ const createSlider = () => {
       changeSlide(slideIndex);
     }, duration);
   }
-  else {
-    alert("duration can't be negative");
+  else if(duration < 0) {
+    timer = setInterval(function () {
+      slideIndex++;
+      changeSlide(slideIndex);
+    }, Math.abs(duration));
   }
 }
 
@@ -129,6 +136,7 @@ const changeSlide = (index) => {
 }
 
 searchBtn.addEventListener('click', function () {
+  searchField.value = '';
   document.querySelector('.main').style.display = 'none';
   clearInterval(timer);
   // const search = document.getElementById('search');
@@ -146,6 +154,7 @@ searchField.addEventListener("keypress", function (event) {
 
 
 sliderBtn.addEventListener('click', function () {
+  duration.value = '';
   createSlider()
 })
 
