@@ -9,13 +9,9 @@ const duration = document.getElementById('duration');
 // selected image 
 let sliders = [];
 
-
-// If this key doesn't work
-// Find the name in the url and go to their website
-// to create your own api key
 const KEY = '15674931-a9d714b6e9d654524df198e00&q';
 
-// show images 
+// Show Image Function
 const showImages = (images) => {
   searchField.value = '';
   imagesArea.style.display = 'block';
@@ -31,19 +27,20 @@ const showImages = (images) => {
   toggleSpinner();
 }
 
+// Image DataLoad Function 
 const getImages = (query) => {
   toggleSpinner();
   fetch(`https://pixabay.com/api/?key=${KEY}=${query}&image_type=photo&pretty=true`)
     .then(response => response.json())
     //* Problem No.1
     .then(data => showImages(data.hits))
-    // function here for bonus mark
     .catch(err => {
-      toggleSpinner()
+      toggleSpinner();
       document.getElementById('error').classList = 'd-block, text-danger';
-    })
+    });
 }
 
+// Select Image Function
 let slideIndex = 0;
 const selectItem = (event, img) => {
   let element = event.target;
@@ -54,21 +51,21 @@ const selectItem = (event, img) => {
   if (item === -1) {
     sliders.push(img);
   }
-   else {
+  else {
     if (item > -1) {
       sliders.splice(item, 1);
     }
-   }
+  }
 }
 
 var timer
 const createSlider = () => {
-  // check slider image length
+  // Check Slider Image Length
   if (sliders.length < 2) {
     alert('Select at least 2 image.')
     return;
   }
-  // create slider previous next area
+  // Create Slider Previous Next Area
   sliderContainer.innerHTML = '';
   const prevNext = document.createElement('div');
   prevNext.className = "prev-next d-flex w-100 justify-content-between align-items-center";
@@ -79,7 +76,7 @@ const createSlider = () => {
 
   sliderContainer.appendChild(prevNext)
   document.querySelector('.main').style.display = 'block';
-  // hide image aria
+  // Hide Image Aria
   imagesArea.style.display = 'none';
   const duration = document.getElementById('duration').value || 1000;
   sliders.forEach(slide => {
@@ -98,7 +95,7 @@ const createSlider = () => {
       changeSlide(slideIndex);
     }, duration);
   }
-  else if(duration < 0) {
+  else if (duration < 0) {
     timer = setInterval(function () {
       slideIndex++;
       changeSlide(slideIndex);
@@ -107,12 +104,12 @@ const createSlider = () => {
 }
 
 
-// change slider index 
+// Change Slider Index 
 const changeItem = index => {
   changeSlide(slideIndex += index);
 }
 
-// change slide item
+// Change Slide Item
 const changeSlide = (index) => {
 
   const items = document.querySelectorAll('.slider-item');
@@ -133,25 +130,31 @@ const changeSlide = (index) => {
   items[index].style.display = "block"
 }
 
+// Search Button Event Handler
 searchBtn.addEventListener('click', function () {
   document.querySelector('.main').style.display = 'none';
   document.getElementById('error').classList = 'd-none';
   clearInterval(timer);
-  getImages(searchField.value)
+  getImages(searchField.value);
   sliders.length = 0;
 })
 
+// Enter Button Event Handler
 //* Problem No.4
 searchField.addEventListener("keypress", function (event) {
-  // console.log(event);
   if (event.key == 'Enter')
     searchBtn.click();
 });
 
+// Enter Button Event Handler
+duration.addEventListener("keypress", function (event) {
+  if (event.key == 'Enter')
+    sliderBtn.click();
+});
 
+// Slider Button Event Handler
 sliderBtn.addEventListener('click', function () {
-  duration.value = '';
-  createSlider()
+  createSlider();
 })
 
 
