@@ -6,24 +6,39 @@ const searchField = document.getElementById('search-field');
 const sliderBtn = document.getElementById('create-slider');
 const sliderContainer = document.getElementById('sliders');
 const duration = document.getElementById('duration');
+const errorInput = document.getElementById('inputError');
 // selected image 
 let sliders = [];
 
 const KEY = '15674931-a9d714b6e9d654524df198e00&q';
 
 // Show Image Function
-const showImages = (images) => {
-  searchField.value = '';
-  imagesArea.style.display = 'block';
-  gallery.innerHTML = '';
-  // show gallery title
-  galleryHeader.style.display = 'flex';
-  images.forEach(image => {
-    let div = document.createElement('div');
-    div.className = 'col-lg-3 col-md-4 col-xs-6 img-item mb-2';
-    div.innerHTML = ` <img class="img-fluid img-thumbnail" onclick=selectItem(event,"${image.webformatURL}") src="${image.webformatURL}" alt="${image.tags}">`;
-    gallery.appendChild(div)
-  })
+const showImages = (images) => { 
+  if (searchField.value === '' || images.length === 0) {
+    imagesArea.style.display = 'none';
+    errorInput.style.display = "block";
+    if (searchField.value === '') {
+      errorInput.innerText = 'Please, input a valid name';
+    }
+    else {
+      errorInput.innerText = "No data found!";
+      searchField.value= '';
+    }
+  }
+  else {
+    errorInput.style.display = "none";
+    searchField.value = '';
+    imagesArea.style.display = 'block';
+    gallery.innerHTML = '';
+    // show gallery title
+    galleryHeader.style.display = 'flex';
+    images.forEach(image => {
+      let div = document.createElement('div');
+      div.className = 'col-lg-3 col-md-4 col-xs-6 img-item mb-2';
+      div.innerHTML = ` <img class="img-fluid img-thumbnail" onclick=selectItem(event,"${image.webformatURL}") src="${image.webformatURL}" alt="${image.tags}">`;
+      gallery.appendChild(div)
+    })
+  }
   toggleSpinner();
 }
 
@@ -32,19 +47,16 @@ const getImages = (query) => {
   toggleSpinner();
   fetch(`https://pixabay.com/api/?key=${KEY}=${query}&image_type=photo&pretty=true`)
     .then(response => response.json())
-    //* Problem No.1
     .then(data => showImages(data.hits))
     .catch(err => {
       toggleSpinner();
-      document.getElementById('error').classList = 'd-block, text-danger';
     });
 }
 
-// Select Image Function
+// Select De-Select Image Function
 let slideIndex = 0;
 const selectItem = (event, img) => {
   let element = event.target;
-  //*Problem No.5
   element.classList.toggle('added');
 
   let item = sliders.indexOf(img);
@@ -58,6 +70,8 @@ const selectItem = (event, img) => {
   }
 }
 
+
+// Slide Create Function
 var timer
 const createSlider = () => {
   // Check Slider Image Length
@@ -88,7 +102,6 @@ const createSlider = () => {
     sliderContainer.appendChild(item)
   })
   changeSlide(0)
-  //* Problem No.3 
   if (duration > 0) {
     timer = setInterval(function () {
       slideIndex++;
@@ -139,14 +152,13 @@ searchBtn.addEventListener('click', function () {
   sliders.length = 0;
 })
 
-// Enter Button Event Handler
-//* Problem No.4
+// Triger Button Click on Enter Key
 searchField.addEventListener("keypress", function (event) {
   if (event.key == 'Enter')
     searchBtn.click();
 });
 
-// Enter Button Event Handler
+// Triger Button Click on Enter Key
 duration.addEventListener("keypress", function (event) {
   if (event.key == 'Enter')
     sliderBtn.click();
