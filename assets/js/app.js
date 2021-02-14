@@ -37,8 +37,11 @@ const getImages = (query) => {
     .then(response => response.json())
     //* Problem No.1
     .then(data => showImages(data.hits))
-    .catch(err => console.log(err))
-  // create a function here for bonus mark
+    // function here for bonus mark
+    .catch(err => {
+      toggleSpinner()
+      document.getElementById('error').classList = 'd-block, text-danger';
+    })
 }
 
 let slideIndex = 0;
@@ -132,6 +135,7 @@ const changeSlide = (index) => {
 
 searchBtn.addEventListener('click', function () {
   document.querySelector('.main').style.display = 'none';
+  document.getElementById('error').classList = 'd-none';
   clearInterval(timer);
   getImages(searchField.value)
   sliders.length = 0;
