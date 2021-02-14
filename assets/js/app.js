@@ -13,7 +13,7 @@ let sliders = [];
 const KEY = '15674931-a9d714b6e9d654524df198e00&q';
 
 // Show Image Function
-const showImages = (images) => { 
+const showImages = (images) => {
   if (searchField.value === '' || images.length === 0) {
     imagesArea.style.display = 'none';
     warningMessage.style.display = "block";
@@ -22,7 +22,7 @@ const showImages = (images) => {
     }
     else {
       warningMessage.innerText = "No data found!";
-      searchField.value= '';
+      searchField.value = '';
     }
   }
   else {
@@ -50,6 +50,11 @@ const getImages = (query) => {
     .then(data => showImages(data.hits))
     .catch(err => {
       toggleSpinner();
+      imagesArea.style.display = 'none';
+      warningMessage.style.display = "block";
+      warningMessage.innerText = ` 404
+        Something went Wrong.
+      `;
     });
 }
 
