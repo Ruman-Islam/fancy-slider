@@ -170,7 +170,6 @@ duration.addEventListener("keypress", function (event) {
 
 // Slider Button Event Handler
 sliderBtn.addEventListener('click', function () {
-  duration.value = '';
   createSlider();
 })
 
