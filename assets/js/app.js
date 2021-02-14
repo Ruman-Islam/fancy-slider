@@ -17,6 +17,7 @@ const KEY = '15674931-a9d714b6e9d654524df198e00&q';
 
 // show images 
 const showImages = (images) => {
+  searchField.value = '';
   imagesArea.style.display = 'block';
   gallery.innerHTML = '';
   // show gallery title
@@ -35,7 +36,6 @@ const getImages = (query) => {
   fetch(`https://pixabay.com/api/?key=${KEY}=${query}&image_type=photo&pretty=true`)
     .then(response => response.json())
     //* Problem No.1
-    //! .then(data => showImages(data.hitS))
     .then(data => showImages(data.hits))
     .catch(err => console.log(err))
   // create a function here for bonus mark
@@ -45,7 +45,6 @@ let slideIndex = 0;
 const selectItem = (event, img) => {
   let element = event.target;
   //*Problem No.5
-  // !element.classList.add('added');
   element.classList.toggle('added');
 
   let item = sliders.indexOf(img);
@@ -90,10 +89,6 @@ const createSlider = () => {
   })
   changeSlide(0)
   //* Problem No.3 
-  //! timer = setInterval(function () {
-  //!   slideIndex++;
-  //!   changeSlide(slideIndex);
-  //! }, duration);
   if (duration > 0) {
     timer = setInterval(function () {
       slideIndex++;
@@ -136,16 +131,13 @@ const changeSlide = (index) => {
 }
 
 searchBtn.addEventListener('click', function () {
-  searchField.value = '';
   document.querySelector('.main').style.display = 'none';
   clearInterval(timer);
-  // const search = document.getElementById('search');
   getImages(searchField.value)
   sliders.length = 0;
 })
 
 //* Problem No.4
-//! Triger the button click on enter key feature
 searchField.addEventListener("keypress", function (event) {
   // console.log(event);
   if (event.key == 'Enter')
