@@ -18,7 +18,7 @@ const showImages = (images) => {
     imagesArea.style.display = 'none';
     errorInput.style.display = "block";
     if (searchField.value === '') {
-      errorInput.innerText = 'Please, input a valid name';
+      errorInput.innerText = 'Please, input a name';
     }
     else {
       errorInput.innerText = "No data found!";
